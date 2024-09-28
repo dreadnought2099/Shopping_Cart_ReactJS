@@ -10,6 +10,7 @@ function App() {
   const [txtName, setTxtName] = useState("");
   const [textPrice, setTextPrice] = useState("");
   const [textQuantity, setTextQuantity] = useState("");
+  const [editIndex, setEditIndex] = useState(null); // New state para edit
 
   function onChange(e) {
     const { id, value } = e.target;
@@ -19,16 +20,32 @@ function App() {
     if (id === "txtQuantity") setTextQuantity(value);
   }
 
-  function addToChart() {
+  function addToCart() {
     if (txtName && textPrice && textQuantity) {
       const item = {
         name: txtName,
         price: parseFloat(textPrice),
         quantity: parseInt(textQuantity),
       };
-      setCartItems([...cartItems, item]);
+      if (editIndex !== null) {
+        const updatedItems = cartItems.map((i, index) =>
+          index === editIndex ? item : i
+        );
+        setCartItems(updatedItems);
+        setEditIndex(null);
+      } else {
+        setCartItems([...cartItems, item]);
+      }
       clearInput();
     }
+  }
+
+  function editItem(index) {
+    const item = cartItems[index];
+    setTxtName(item.name);
+    setTextPrice(item.price);
+    setTextQuantity(item.quantity);
+    setEditIndex(index); // Set the index sa item nga gi-edit
   }
 
   function deleteItem(itemIndex) {
@@ -51,6 +68,13 @@ function App() {
       currency: "PHP",
     }).format(value);
   };
+
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const shippingFee = 50; // gi set nga shipping fee
+  const total = subtotal + shippingFee;
 
   return (
     <div>
@@ -82,8 +106,8 @@ function App() {
           />
           <div className="d-flex justify-content-center py-2">
             <CustomButton
-              label="add to cart"
-              onClick={addToChart}
+              label={editIndex !== null ? "Update" : "Add to Cart"}
+              onClick={addToCart}
               variant="primary"
             />
           </div>
@@ -116,6 +140,7 @@ function App() {
                         label="edit"
                         variant="success"
                         innerClass="m-1"
+                        onClick={() => editItem(index)} // Edit button functionality
                       />
                       <CustomButton
                         label="delete"
@@ -147,8 +172,15 @@ function App() {
                 label="Clear"
                 onClick={clearCart}
                 variant="secondary"
-                innerClass="m-1"
+                innerClass="m-1 clear-button"
               />
+            </div>
+            <div className="d-flex justify-content-end">
+              <div className="summary-container p-3">
+                <h5>Subtotal: {formatCurrency(subtotal)}</h5>
+                <h5>Shipping Fee: {formatCurrency(shippingFee)}</h5>
+                <h5>Total: {formatCurrency(total)}</h5>
+              </div>
             </div>
           </div>
         )}
