@@ -76,8 +76,9 @@ function App() {
   };
 
   const getShippingFee = () => {
-    if (selectedTown === "tubigon") return 50;
-    if (selectedTown === "calape") return 100;
+    if (selectedTown === "tubigon") return 80;
+    if (selectedTown === "calape") return 70;
+    if (selectedTown === "sagbayan") return 90;
     return 0; // Default shipping fee if no town is selected
   };
 
@@ -169,7 +170,7 @@ function App() {
               <Dropdown
                 id="drpTown"
                 label="town"
-                options={["tubigon", "calape"]}
+                options={["tubigon", "calape", "sagbayan"]}
                 containerClass="p-3"
                 onSelectChange={handleTownChange} // Use the new handleTownChange function
               />
