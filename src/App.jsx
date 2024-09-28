@@ -10,7 +10,8 @@ function App() {
   const [txtName, setTxtName] = useState("");
   const [textPrice, setTextPrice] = useState("");
   const [textQuantity, setTextQuantity] = useState("");
-  const [editIndex, setEditIndex] = useState(null); // New state para edit
+  const [editIndex, setEditIndex] = useState(null);
+  const [selectedTown, setSelectedTown] = useState(""); // State for selected town
 
   function onChange(e) {
     const { id, value } = e.target;
@@ -18,6 +19,11 @@ function App() {
     if (id === "txtName") setTxtName(value);
     if (id === "txtPrice") setTextPrice(value);
     if (id === "txtQuantity") setTextQuantity(value);
+  }
+
+  // Handle town selection separately
+  function handleTownChange(e) {
+    setSelectedTown(e.target.value); // Update the selected town
   }
 
   function addToCart() {
@@ -45,7 +51,7 @@ function App() {
     setTxtName(item.name);
     setTextPrice(item.price);
     setTextQuantity(item.quantity);
-    setEditIndex(index); // Set the index sa item nga gi-edit
+    setEditIndex(index);
   }
 
   function deleteItem(itemIndex) {
@@ -69,11 +75,17 @@ function App() {
     }).format(value);
   };
 
+  const getShippingFee = () => {
+    if (selectedTown === "tubigon") return 50;
+    if (selectedTown === "calape") return 100;
+    return 0; // Default shipping fee if no town is selected
+  };
+
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-  const shippingFee = 50; // gi set nga shipping fee
+  const shippingFee = getShippingFee(); // Dynamically calculate shipping fee
   const total = subtotal + shippingFee;
 
   return (
@@ -159,7 +171,7 @@ function App() {
                 label="town"
                 options={["tubigon", "calape"]}
                 containerClass="p-3"
-                onSelectChange={onChange}
+                onSelectChange={handleTownChange} // Use the new handleTownChange function
               />
               <Dropdown
                 id="drpPayment"
