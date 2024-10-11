@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Textbox from "./components/textbox/textbox";
 import Dropdown from "./components/dropdown/dropdown";
@@ -6,12 +6,21 @@ import CustomButton from "./components/button/button";
 import "./App.css";
 
 function App() {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    // Load cart items from local storage on initial render
+    const storedItems = localStorage.getItem("cartItems");
+    return storedItems ? JSON.parse(storedItems) : [];
+  });
   const [txtName, setTxtName] = useState("");
   const [textPrice, setTextPrice] = useState("");
   const [textQuantity, setTextQuantity] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [selectedTown, setSelectedTown] = useState(""); // State for selected town
+
+  useEffect(() => {
+    // Store cart items in local storage whenever they change
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   function onChange(e) {
     const { id, value } = e.target;
