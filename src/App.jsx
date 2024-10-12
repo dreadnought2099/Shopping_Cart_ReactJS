@@ -208,7 +208,7 @@ function App() {
               <div className="summary-container p-3">
                 <h5>Subtotal: {formatCurrency(subtotal)}</h5>
                 <h5>Shipping Fee: {formatCurrency(shippingFee)}</h5>
-                <h5>Total: {formatCurrency(total)}</h5>
+                <h5 className="total">Total: {formatCurrency(total)}</h5>
               </div>
             </div>
           </div>
