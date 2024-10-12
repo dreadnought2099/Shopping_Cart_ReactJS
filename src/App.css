@@ -35,8 +35,8 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  height: 45px;
 }
-
 .clear-button:hover {
   background-color: #c92828;
 }

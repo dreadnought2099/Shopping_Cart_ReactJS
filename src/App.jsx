@@ -182,7 +182,7 @@ function App() {
                 ))}
               </tbody>
             </Table>
-            <div className="d-flex">
+            <div className="d-flex align-items-center">
               <Dropdown
                 id="drpTown"
                 label="town"
