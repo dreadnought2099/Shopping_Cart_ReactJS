@@ -58,11 +58,14 @@ function App() {
         setCartItems([...cartItems, item]);
       }
       clearInput();
-      if (nextContainerRef.current) {
-        nextContainerRef.current.scrollIntoView({ behavior: "smooth" });
-      }
     }
   }
+
+  useEffect(() => {
+    if (cartItems.length > 0 && nextContainerRef.current) {
+      nextContainerRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [cartItems]); // Depend on cartItems
 
   function editItem(index) {
     const item = cartItems[index];
@@ -83,6 +86,7 @@ function App() {
     setTxtName("");
     setTextPrice("");
     setTextQuantity("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function clearCart() {
