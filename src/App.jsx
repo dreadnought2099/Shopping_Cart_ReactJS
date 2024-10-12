@@ -66,10 +66,13 @@ function App() {
     setTextPrice(item.price);
     setTextQuantity(item.quantity);
     setEditIndex(index);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function deleteItem(itemIndex) {
     setCartItems(cartItems.filter((_, index) => index !== itemIndex));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function clearInput() {
