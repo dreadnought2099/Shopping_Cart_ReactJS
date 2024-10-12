@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Table from "react-bootstrap/Table";
 import Textbox from "./components/textbox/textbox";
 import Dropdown from "./components/dropdown/dropdown";
@@ -10,6 +10,7 @@ function App() {
     const storedItems = localStorage.getItem("cartItems");
     return storedItems ? JSON.parse(storedItems) : [];
   });
+  const nextContainerRef = useRef(null);
   const [txtName, setTxtName] = useState("");
   const [textPrice, setTextPrice] = useState("");
   const [textQuantity, setTextQuantity] = useState("");
@@ -57,6 +58,9 @@ function App() {
         setCartItems([...cartItems, item]);
       }
       clearInput();
+      if (nextContainerRef.current) {
+        nextContainerRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   }
 
@@ -136,7 +140,10 @@ function App() {
             containerClass="p-3"
             onTextChange={onChange}
           />
-          <div className="d-flex justify-content-center py-2">
+          <div
+            className="d-flex justify-content-center py-2"
+            ref={nextContainerRef}
+          >
             <CustomButton
               label={editIndex !== null ? "Update" : "Add to Cart"}
               onClick={addToCart}
